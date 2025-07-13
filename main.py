@@ -1,20 +1,23 @@
 from fastapi import FastAPI
-from fastapi.responses import HTML_Response
+from fastapi.responses import HTMLResponse
 
 app = FastAPI()
 
-@app.get("/", read_class=HTML_Response)
-async def read_alternative():
+def generate_html_response():
     html_content = """
     <!DOCTYPE html>
     <html>
         <head>
             <title>Альтернативный метод</title>
-        <head>
+        </head>
         <body>
             <h1>Some text</h1>
             <p>Another scenario</p>
         </body>
     </html>
     """
-    return html_content
+    return HTMLResponse(content=html_content, status_code=200)
+
+@app.get("/items/", response_class=HTMLResponse)
+async def read_items():
+    return generate_html_response()
